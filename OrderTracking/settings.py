@@ -31,12 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'OrderTracking'
 ]
 
 MIDDLEWARE = [
@@ -70,9 +72,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'OrderTracking.wsgi.application'
 
-
+ASGI_APPLICATION= 'OrderTracking.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 DATABASES = {
     'default': {
