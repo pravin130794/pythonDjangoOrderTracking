@@ -23,9 +23,9 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 CHOICES = (
     ("Order Initiated", "Order Initiated"),
     ("Baking", "Baking"),
-    ("Baked", "Baked"),
     ("Out for Delivery", "Out for Delivery"),
-    ("Order Received", "Order Received"),   
+    ("Order Received", "Order Received"),
+
 )
     
 class Order(models.Model):
@@ -50,17 +50,16 @@ class Order(models.Model):
         data['amount'] = instance.amount
         data['status'] = instance.status
         data['date'] = str(instance.date)
-        progress_percentage = 20
+        progress_percentage = 25
         if instance.status == 'Order Initiated':
-            progress_percentage = 20
+            progress_percentage = 25
         elif instance.status == 'Baking':
-            progress_percentage = 40
-        elif instance.status == 'Baked':
-            progress_percentage = 60
+            progress_percentage = 50
         elif instance.status == 'Out for Delivery':
-            progress_percentage = 80
+            progress_percentage = 75
         elif instance.status == 'Order Received':
             progress_percentage = 100
+
             
         data['progress'] = progress_percentage
         
@@ -75,24 +74,22 @@ class Order(models.Model):
 def order_status_handler(sender, instance,created , **kwargs):
     
     if not created:
-        print("###################")
         channel_layer = get_channel_layer()
         data  = {}
         data['order_id'] = instance.order_id
         data['amount'] = instance.amount
         data['status'] = instance.status
         data['date'] = str(instance.date)
-        progress_percentage = 20
+        progress_percentage = 25
         if instance.status == 'Order Initiated':
-            progress_percentage = 20
+            progress_percentage = 25
         elif instance.status == 'Baking':
-            progress_percentage = 40
-        elif instance.status == 'Baked':
-            progress_percentage = 60
+            progress_percentage = 50
         elif instance.status == 'Out for Delivery':
-            progress_percentage = 80
+            progress_percentage = 75
         elif instance.status == 'Order Received':
             progress_percentage = 100
+
     
         
         data['progress'] = progress_percentage

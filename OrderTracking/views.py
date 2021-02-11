@@ -17,7 +17,7 @@ def details(request):
 def order(request , order_id):
     order = Order.objects.filter(order_id=order_id).first()
     if order is None:
-        return redirect('')
+        return redirect('/')
     
     context = {'order' : order}
     return render(request , 'details.html', context)
