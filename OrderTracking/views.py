@@ -1,8 +1,10 @@
+from django.core.cache import cache
 from django.shortcuts import render, redirect
 from .models import *
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
 
 def index(request):
     pizza = Pizza.objects.all()
@@ -15,9 +17,15 @@ def details(request):
 
 
 def order(request , order_id):
-    order = Order.objects.filter(order_id=order_id).first()
-    if order is None:
-        return redirect('/')
+    if cache.get(order_id):
+        print('data from Cache Redis')
+        order = cache.get(order_id)
+    else:
+        order = Order.objects.filter(order_id=order_id).first()
+        print('data from DB')
+        cache.set(order_id, order)
+        if order is None:
+            return redirect('/')
     
     context = {'order' : order}
     return render(request , 'details.html', context)

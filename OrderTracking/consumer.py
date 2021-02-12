@@ -9,7 +9,6 @@ class OrderProgress(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['order_id']
         self.room_group_name = 'order_%s' % self.room_name
-        print(self.room_group_name)
         
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -45,7 +44,6 @@ class OrderProgress(WebsocketConsumer):
 
     # Receive message from room group
     def order_status(self, event):
-        print(event)
         data = json.loads(event['value'])
         # Send message to WebSocket
         self.send(text_data=json.dumps({
